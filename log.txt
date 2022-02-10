@@ -1,6 +1,0 @@
-URL: /documentation
-Timestamp: Fri Feb 04 2022 14:50:59 GMT+0100 (Mitteleuropäische Normalzeit)
-
-URL: /favicon.ico
-Timestamp: Fri Feb 04 2022 14:50:59 GMT+0100 (Mitteleuropäische Normalzeit)
-
