@@ -258,17 +258,17 @@ app.listen(8080, () => {
 });
 
 //express function that automatically routes all requests for static files to their corresponding files in the "public" folder
-//app.use(express.static("public"));
+app.use(express.static("public"));
 
 //Morgan middleware library that logs all request
-//let myLogger = (req, res, next) => {
-  //console.log(req.url);
-  //next();
-//};
-//app.use(myLogger);
+let myLogger = (req, res, next) => {
+  console.log(req.url);
+  next();
+};
+app.use(myLogger);
 
 //setting the error handler in express(always put it last in line)
-//app.use((err, req, res, next) => {
-  //console.error(err.stack);
-  //res.status(500).send("Error!");
-//});
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Error!");
+});
