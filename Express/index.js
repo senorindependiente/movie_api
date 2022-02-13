@@ -1,10 +1,28 @@
-//imports express framework and morgan middleware
+//imports express ( a node.js)framework with middlware module packages  body parser, uuid and morgan 
+const bodyParser = require("body-parser");
 const express = require("express"),
-morgan = require("morgan");
+morgan = require("morgan"),
+//automatically creates and assigns unique ids to new users
+uuid = require("uuid");
+
 //sets  express’s functionality to a variable
 const app = express();
+
+//invokes the middleware module body-parser.
+//it allows you to read the “body” of HTTP requests within your request handlers simply by using the code req.body.
+app.use(bodyParser.json())
+
 //invokes middle ware function with "common" parameters using the default format 
 app.use(morgan('common'));
+
+
+let users = [
+
+
+  
+]
+
+
 
 let topMovies = [
   { title: "One Flew Over the Cuckoo's Nest", year: "1975",director:"Milos Forman" },
