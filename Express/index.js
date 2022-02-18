@@ -15,6 +15,18 @@ app.use(bodyParser.json());
 //invokes middle ware function with "common" parameters using the default format
 app.use(morgan("common"));
 
+//importing mongoose to be integrated with the REST API
+// this will allow the REST API to perform CRUD operations on MongoDB
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+//importing mongoose models which were defined in models.js 
+const Movies = Models.Movie;
+const Users = Models.User;
+
+//allows mongoose to connect to the myFlixDB database to perform CRUD operations
+mongoose.connect("mongodb://localhost:27017/myFlixDB", { useNewUrlParser:true, useUnifiedTopology:true});
+
+
 let users = [
 
 {
