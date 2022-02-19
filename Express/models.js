@@ -20,6 +20,10 @@ let movieSchema = mongoose.Schema({
     Featured:Boolean
 });
 
+
+
+
+
 //defining the schema for the users collection
 
 let userSchema = mongoose.Schema({
@@ -36,6 +40,7 @@ let userSchema = mongoose.Schema({
 //this will create collections called db.movies and db.users in mongodb
 let Movie = mongoose.model("Movie", movieSchema);
 let User = mongoose.model("User", userSchema);
+
 
 //exporting the models in order to import them in index.js
 
