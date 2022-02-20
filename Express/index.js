@@ -56,7 +56,7 @@ require("./passport");
   Email: String,
   Birthday: Date
 }*/
-app.post("/users", (req, res) => {
+app.post("/users", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.findOne({ Username: req.body.Username }).then((user) => {
     if (user) {
       return res.status(400).send(req.body.Username + "already exists");
@@ -79,7 +79,7 @@ app.post("/users", (req, res) => {
 });
 
 //GET route to get a user
-app.get("/users/:username", (req,res) =>{
+app.get("/users/:username", passport.authenticate ("jwt", {sesstion:false}), (req,res) =>{
 Users.findOne({Username:req.params.username},)
 .then((users) => {
       res.status(201).json(users);
@@ -93,7 +93,7 @@ Users.findOne({Username:req.params.username},)
 
 
 //PUT route to update User
-app.put("/users/:username", (req, res) => {
+app.put("/users/:username", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     {
@@ -117,7 +117,7 @@ app.put("/users/:username", (req, res) => {
 });
 
 //POST route to add movie to favorite
-app.post("/users/:username/movies/:movieID", (req, res) => {
+app.post("/users/:username/movies/:movieID", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     { $push: { FavoriteMovies: req.params.movieID } },
@@ -134,7 +134,7 @@ app.post("/users/:username/movies/:movieID", (req, res) => {
 });
 
 //DELETE route to delete favorite movie from list
-app.delete("/users/:username/movies/:movieID", (req, res) => {
+app.delete("/users/:username/movies/:movieID", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     { $pull: { FavoriteMovies: req.params.movieID } },
@@ -151,7 +151,7 @@ app.delete("/users/:username/movies/:movieID", (req, res) => {
 });
 
 //DELETE route to delete user
-app.delete("/users/:username", (req, res) => {
+app.delete("/users/:username", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.username })
     .then((user) => {
       if (!user) {
@@ -167,7 +167,7 @@ app.delete("/users/:username", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies" which returns a json object in form of a  list of top 10 movies with the status 200 "ok"
-app.get("/movies", (req, res) => {
+app.get("/movies", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -179,7 +179,7 @@ app.get("/movies", (req, res) => {
 });
 
 //GET route located a the endpoint"/users" to get a list of all users
-app.get("/users", (req, res) => {
+app.get("/users", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -191,7 +191,7 @@ app.get("/users", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies/title" which returns a json object with a single movie
-app.get("/movies/:title", (req, res) => {
+app.get("/movies/:title", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Movies.findOne({ Title: req.params.title })
     .then((movie) => {
       res.json(movie);
@@ -203,7 +203,7 @@ app.get("/movies/:title", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
-app.get("/genre/:name", (req, res) => {
+app.get("/genre/:name", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Movies.findOne({ "Genre:Name": req.params.name})
     .then((movie) => {
       res.json(movie.Genre.Description);
@@ -215,7 +215,7 @@ app.get("/genre/:name", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies/director" which returns a json object with a single movie
-app.get("/directors/:name", (req, res) => {
+app.get("/directors/:name",passport.authenticate ("jwt", {sesstion:false}),  (req, res) => {
   Movies.findOne({ "Director:Name": req.params.name })
     .then((movie) => {
       res.json(movie.Director);

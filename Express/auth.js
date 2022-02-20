@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken"),
   passport = require("passport");
 
 require("./passport"); //the local passport file
-//checks first if the username and password exist in the database by using LocalStrategy, if so it generates JWTToken
+//this code checks first if the username and password exist in the database by using LocalStrategy, if so it generates JWTToken
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username, //the username you are encoding in the JWT
