@@ -28,7 +28,7 @@
         <td>Returns a list of all movies to the user</td>
         <td>"/movies"</td>
         <td>none</td>
-        <td>GET</td>
+        <td>GET <br> Example: app.get("/movies", (req,res) =>{})</td>
         <td>
           A JSON object holding data about all the movies <br />
           Example: {Title: "One Flew Over the Cuckoo's Nest", Description: "",
@@ -40,7 +40,7 @@
         <td>Returns data about a single movie by title to the user</td>
         <td>"/movies/:title"</td>
         <td>:title</td>
-        <td>GET</td>
+        <td>GET <br> Example: app.get("/movies/:title", (req,res) =>{})</td>
         <td>
           A JSON object holding data about a single movie <br />
           Example: {Title: "One Flew Over the Cuckoo's Nest", Description: ""}
@@ -50,7 +50,7 @@
         <td>Returns data about a genre by name</td>
         <td>"/movies/genre/:name"</td>
         <td>:name</td>
-        <td>GET</td>
+        <td>GET<br> Example: app.get("/movies/genre/:name", (req,res) =>{})</td>
         <td>
           A JSON object holding data about a genre <br />
           Example: Genre: { Name: "Drama", Description:""}
@@ -61,10 +61,10 @@
         <td>Returns data about a director by name</td>
         <td>"/movies/directors/:name"</td>
         <td>:name</td>
-        <td>GET</td>
+        <td>GET <br> Example: app.get("/movies/directors/:name", (req,res) =>{})</td>
         <td>
           A JSON object holding data about a director <br />
-          Exmple: Director: { Name: "Milos Forman", Bio: "" },
+          Example: Director: { Name: "Milos Forman", Bio: "" },
         </td>
       </tr>
     
@@ -72,7 +72,7 @@
         <td>Allows new users to register</td>
         <td>"/users"</td>
         <td>none</td>
-        <td>POST</td>
+        <td>POST <br>Example: app.post("/users", (req,res) =>{})</td>
         <td>
           A JSON object holding data about new user that was added <br />
           Example: {
@@ -98,26 +98,26 @@
         <td>Allows users to update their user info</td>
         <td>"/users/:username"</td>
         <td>:username</td>
-        <td>PUT</td>
+        <td>PUT <br> Example: app.put("/users:username", (req,res) =>{})</td>
       </tr>
       <tr>
         <td>Allows users to add a movie to their list of favorites</td>
         <td>"/users/:username/movies/:movieID"</td>
         <td>:username,:movieID</td>
-        <td>POST</td>
+        <td>POST <br> Example: app.post("/users/:username/movies/:movieID", (req,res) =>{})</td>
       </tr>
       <tr>
         <td>Allows users to remove a movie from their list of favorites</td>
         <td>"/users/:username//movies/:movieID"</td>
         <td>:username,:movieID</td>
-        <td>DELETE</td>
+        <td>DELETE <br> Example: app.delete("/users/:username/movies/:movieID", (req,res) =>{})</td>
 
       </tr>
       <tr>
         <td>Allows existing users to deregister</td>
-        <td>"/users/username"</td>
+        <td>"/users/:username"</td>
         <td>:username</td>
-        <td>DELETE</td>
+        <td>DELETE <br> Example: app.delete("/users/:username", (req,res) =>{})</td>
         <td>A text message indicating that the user has been deleted</td>
       </tr>
     </table>
