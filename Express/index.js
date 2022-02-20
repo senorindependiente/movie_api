@@ -6,15 +6,19 @@ const express = require("express"),
   uuid = require("uuid");
 const res = require("express/lib/response");
 
+
 //sets  express’s functionality to a variable
 const app = express();
+
 
 //invokes the middleware module body-parser.
 //it allows you to read the “body” of HTTP requests within your request handlers simply by using the code req.body.
 app.use(bodyParser.json());
 
+
 //invokes middle ware function with "common" parameters using the default format
 app.use(morgan("common"));
+
 
 //importing mongoose to be integrated with the REST API
 // this will allow the REST API to perform CRUD operations on MongoDB
@@ -31,6 +35,17 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+
+//integrating auth.js file for authentication and authorization using HTTP and JWSToken
+let auth = require("./auth") (app);
+const passport = require("passport");
+require("./passport");
+
+
+
+
+
 
 //POST route to add new User
 /* We’ll expect JSON in this format
