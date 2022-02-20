@@ -24,8 +24,7 @@ const Models = require("./models.js");
 //importing mongoose models which were defined in models.js
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
+
 
 //allows mongoose to connect to the myFlixDB database to perform CRUD operations
 mongoose.connect("mongodb://localhost:27017/myFlixDB", {
@@ -64,10 +63,24 @@ app.post("/users", (req, res) => {
   });
 });
 
+//GET route to get a user
+app.get("/users/:username", (req,res) =>{
+Users.findOne({Username:req.params.username},)
+.then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+})
+
+
+
 //PUT route to update User
-app.put("/users/:Username", (req, res) => {
+app.put("/users/:username", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { Username: req.params.username },
     {
       $set: {
         Username: req.body.Username,
@@ -89,10 +102,10 @@ app.put("/users/:Username", (req, res) => {
 });
 
 //POST route to add movie to favorite
-app.post("/users/:Username/:MovieID", (req, res) => {
-  Users.findByIdAndUpdate(
-    { Username: req.params.Username },
-    { $push: { favoriteMovies: req.params.MovieID } },
+app.post("/users/:username/movies/:movieID", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $push: { FavoriteMovies: req.params.movieID } },
     { new: true }, //This line makes sure that the updated document is returned
     (err, updatedUser) => {
       if (err) {
@@ -106,10 +119,10 @@ app.post("/users/:Username/:MovieID", (req, res) => {
 });
 
 //DELETE route to delete favorite movie from list
-app.delete("/users/:Username/:movieTitle", (req, res) => {
-  Users.findByIdAndRemove(
-    { Username: req.params.Username },
-    { $pull: { favoriteMovies: req.params.MovieID } },
+app.delete("/users/:username/movies/:movieID", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $pull: { FavoriteMovies: req.params.movieID } },
     { new: true }, //This line makes sure that the updated document is returned
     (err, updatedUser) => {
       if (err) {
@@ -123,13 +136,13 @@ app.delete("/users/:Username/:movieTitle", (req, res) => {
 });
 
 //DELETE route to delete user
-app.delete("/users/:Username", (req, res) => {
-  Users.findByIdAndRemove({ Username: req.params.Username })
+app.delete("/users/:username", (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.username })
     .then((user) => {
       if (!user) {
-        res.status(400).send(req.params.Username + "was not found");
+        res.status(400).send(req.params.username + "was not found");
       } else {
-        res.status(200).send(req.params.Username + "was deleted");
+        res.status(200).send(req.params.username + "was deleted");
       }
     })
     .catch((err) => {
@@ -164,7 +177,7 @@ app.get("/users", (req, res) => {
 
 //GET route located at the endpoint "/movies/title" which returns a json object with a single movie
 app.get("/movies/:title", (req, res) => {
-  Movies.findOne({ Title: req.params.Title })
+  Movies.findOne({ Title: req.params.title })
     .then((movie) => {
       res.json(movie);
     })
@@ -175,10 +188,10 @@ app.get("/movies/:title", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
-app.get("/movies/genre/:genreName", (req, res) => {
-  Genre.findOne({ Genre: req.params.Genre })
-    .then((genre) => {
-      res.json(genre);
+app.get("/genre/:name", (req, res) => {
+  Movies.findOne({ "Genre:Name": req.params.name})
+    .then((movie) => {
+      res.json(movie.Genre.Description);
     })
     .catch((err) => {
       console.error(err);
@@ -187,10 +200,10 @@ app.get("/movies/genre/:genreName", (req, res) => {
 });
 
 //GET route located at the endpoint "/movies/director" which returns a json object with a single movie
-app.get("/movies/directors/:directorName", (req, res) => {
-  Directors.findOne({ Name: req.params.Name })
-    .then((director) => {
-      res.json(director);
+app.get("/directors/:name", (req, res) => {
+  Movies.findOne({ "Director:Name": req.params.name })
+    .then((movie) => {
+      res.json(movie.Director);
     })
     .catch((err) => {
       console.error(err);
