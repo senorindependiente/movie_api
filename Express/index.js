@@ -37,10 +37,17 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
 });
 
 
+//integrating middleware cors for Cross-origin resource sharing
+//it defines which domains/origins can access your API (here the default is, it grands access to all domains)
+const cors = require("cors");
+app.use(cors())
+
 //integrating auth.js file for authentication and authorization using HTTP and JWSToken
 let auth = require("./auth") (app);
 const passport = require("passport");
 require("./passport");
+
+
 
 
 
