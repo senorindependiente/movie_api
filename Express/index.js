@@ -56,7 +56,7 @@ require("./passport");
   Email: String,
   Birthday: Date
 }*/
-app.post("/users", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
+app.post("/users", (req, res) => {
   Users.findOne({ Username: req.body.Username }).then((user) => {
     if (user) {
       return res.status(400).send(req.body.Username + "already exists");
@@ -93,7 +93,9 @@ Users.findOne({Username:req.params.username},)
 
 
 //PUT route to update User
-app.put("/users/:username", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
+app.put("/users/:username", 
+passport.authenticate ("jwt", {sesstion:false}), //this code integrates authorization for all the API endpoints
+(req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     {
@@ -206,7 +208,7 @@ app.get("/movies/:title", passport.authenticate ("jwt", {sesstion:false}), (req,
 app.get("/genre/:name", passport.authenticate ("jwt", {sesstion:false}), (req, res) => {
   Movies.findOne({ "Genre:Name": req.params.name})
     .then((movie) => {
-      res.json(movie.Genre.Description);
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -218,7 +220,7 @@ app.get("/genre/:name", passport.authenticate ("jwt", {sesstion:false}), (req, r
 app.get("/directors/:name",passport.authenticate ("jwt", {sesstion:false}),  (req, res) => {
   Movies.findOne({ "Director:Name": req.params.name })
     .then((movie) => {
-      res.json(movie.Director);
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);

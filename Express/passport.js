@@ -8,10 +8,10 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
-  //defining the two passport trategies
+//defining the two passport trategies
 
 passport.use(
-    // LocalStrategy defines the basic HTTP authentication for login requests
+  // LocalStrategy defines the basic HTTP authentication for login requests
   new LocalStrategy(
     {
       usernameField: "Username",
@@ -40,11 +40,10 @@ passport.use(
 );
 
 passport.use(
-
-    //JWTStrategy allows to authenticate users based on the JWT submitted alongside their request.
+  //JWTStrategy allows to authenticate users based on the JWT submitted alongside their request.
   new JWTStrategy(
     {
-        //the JWT is extracted from the header of the HTTP requet. The JWT is called the "bearer token"
+      //the JWT is extracted from the header of the HTTP requet. The JWT is called the "bearer token"
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       //secret key to verify the signature of the JWT (verifies that the sender of the JWT is who it says it is)
       secretOrKey: "your_jwt_secret",
