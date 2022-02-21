@@ -19,7 +19,7 @@ let movieSchema = mongoose.Schema({
     Bio: String,
   },
   ImagePath: String,
-  Featured: Boolean,
+  Featured: Boolean
 });
 
 //defining the schema for the users collection
@@ -38,6 +38,8 @@ let userSchema = mongoose.Schema({
 userSchema.statics.hashPassword = (password) => {
   return bcrypt.hashSync(password, 10);
 };
+
+//do not use arrow functions when defining instance methods such as validatePassword
 userSchema.methods.validatePassword = function (password) {
   return bcrypt.compareSync(password, this.Password);
 };

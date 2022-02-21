@@ -15,11 +15,11 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: "Username",
-      passwordField: "Password",
+      passwordField: "Password"
     },
     (username, password, callback) => {
       console.log(username + " " + password);
-      Users.findOne({ username: username }, (error, user) => {
+      Users.findOne({ Username: username }, (error, user) => {
         if (error) {
           console.log(error);
           return callback(error);
@@ -30,6 +30,11 @@ passport.use(
           return callback(null, false, {
             message: "Incorrect username or password.",
           });
+        }
+//integrating bcrypt to validate password 
+        if(!user.validatePassword(password)) {
+          console.log("incorrect password");
+          return callback(null, false, {messsage:"Incorrect password."});
         }
 
         console.log("finished");
