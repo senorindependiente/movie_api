@@ -306,7 +306,7 @@ app.get("/", (req, res) => {
 //setting up server on port 8080, listen for request
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
-  console.log("Listening on Port");
+  console.log("Listening on Port" + port);
 });
 
 //express function that automatically routes all requests for static files to their corresponding files in the "public" folder
