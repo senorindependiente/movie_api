@@ -26,10 +26,13 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 //allows mongoose to connect to the myFlixDB database to perform CRUD operations
-mongoose.connect("mongodb://localhost:27017/myFlixDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.CONNECTION_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 //integrating middleware cors for Cross-origin resource sharing
 //it defines which domains/origins can access your API (here the default is, it grands access to all domains)
@@ -40,7 +43,6 @@ app.use(cors());
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
-
 
 //integrating middleware express validator used for server-side input validation
 const { check, validationResult } = require("express-validator");
@@ -63,10 +65,13 @@ app.post(
   //minimum value of 5 characters are only allowed
 
   [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Password", "Password is required").not().isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail(),
   ],
   (req, res) => {
     // check the validation object for errors
@@ -102,9 +107,10 @@ app.post(
       })
       .catch((error) => {
         console.error(error);
-        res.status(500).send('Error: ' + error);
+        res.status(500).send("Error: " + error);
       });
-  });
+  }
+);
 
 //GET route to get a user
 app.get(
@@ -298,8 +304,9 @@ app.get("/", (req, res) => {
 });
 
 //setting up server on port 8080, listen for request
-app.listen(8080, () => {
-  console.log("My app is listening on port 8080.");
+const port = process.env.PORT || 8080;
+app.listen(port, "0.0.0.0", () => {
+  console.log("Listening on Port");
 });
 
 //express function that automatically routes all requests for static files to their corresponding files in the "public" folder
