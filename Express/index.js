@@ -1,10 +1,11 @@
+
 //imports express ( a node.js)framework with middlware module packages  body parser, uuid and morgan
 const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
   //automatically creates and assigns unique ids to new users
   uuid = require("uuid");
-const res = require("express/lib/response");
+// const res = require("express/lib/response");
 
 //sets  express’s functionality to a variable
 const app = express();
@@ -25,11 +26,9 @@ const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//integrating middleware express validator used for server-side input validation
-const { check, validationResult } = require("express-validator");
-
 //allows mongoose to connect to the myFlixDB database to perform CRUD operations
-mongoose.connect(process.env.CONNECTION_URI, {
+
+mongoose.connect("mongodb://localhost:27017/myFlixDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -43,6 +42,9 @@ app.use(cors());
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
+
+//integrating middleware express validator used for server-side input validation
+const { check, validationResult } = require("express-validator");
 
 //POST route to add new User
 /* We’ll expect JSON in this format
@@ -301,10 +303,10 @@ app.get("/", (req, res) => {
 });
 
 //setting up server on port 8080, listen for request
-const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
-  console.log("Listening on Port" + port);
-});
+// const port = process.env.PORT || 8080;
+// app.listen(port, "0.0.0.0", () => {
+//   console.log("Listening on Port" + port);
+// });
 
 //express function that automatically routes all requests for static files to their corresponding files in the "public" folder
 app.use(express.static("public"));
