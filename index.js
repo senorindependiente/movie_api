@@ -119,7 +119,7 @@ app.post(
 //GET route to get a user
 app.get(
   "/users/:username",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOne({ Username: req.params.username })
       .then((user) => {
