@@ -11,7 +11,7 @@ const app = express();
 
 //invokes the middleware module body-parser.
 //it allows you to read the “body” of HTTP requests within your request handlers simply by using the code req.body.
-app.use(bodyParser.json());
+
 
 //invokes middle ware function with "common" parameters using the default format
 app.use(morgan("common"));
@@ -37,6 +37,9 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, 
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //integrating middleware cors for Cross-origin resource sharing
 //it defines which domains/origins can access your API (here the default is, it grands access to all domains)
