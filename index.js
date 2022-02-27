@@ -34,7 +34,7 @@ const { check, validationResult } = require("express-validator");
 //   useUnifiedTopology: true,
 // });
 
-mongoose.connect("mongodb://localhost:27017/dbname", {
+mongoose.connect("process.env.CONNECTION_URI", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
