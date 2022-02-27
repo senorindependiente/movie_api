@@ -13,6 +13,7 @@ personal information, and create a list of their favorite movies.
 * [Setup](#setup)
 
 ## Technologies Used
+### MERN Stack
 - JavaScript
 - Node.js 
 - Express
@@ -31,9 +32,10 @@ personal information, and create a list of their favorite movies.
 - Allow existing users to deregister
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
+Run application with 
+
+`node index.js`
 
 
 
