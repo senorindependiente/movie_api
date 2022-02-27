@@ -1,4 +1,4 @@
-# movie_api
+# myFlix API
 
 > Server-side component of a “movies” web application. The web
 application will provide users with access to information about different
