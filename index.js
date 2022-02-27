@@ -29,15 +29,13 @@ const Users = Models.User;
 const { check, validationResult } = require("express-validator");
 
 //allows mongoose to connect to the myFlixDB database to perform CRUD operations
-// mongoose.connect(process.env.CONNECTION_URI, {
+
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect("process.env.CONNECTION_URI", {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
-
-mongoose.connect("process.env.CONNECTION_URI", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
 //integrating middleware cors for Cross-origin resource sharing
 //it defines which domains/origins can access your API (here the default is, it grands access to all domains)
