@@ -13,7 +13,7 @@ personal information, and create a list of their favorite movies.
 * [Setup](#setup)
 
 ## Technologies Used
-#### MERN Stack
+
 - JavaScript
 - Node.js 
 - Express
