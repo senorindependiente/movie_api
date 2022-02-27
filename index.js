@@ -117,7 +117,7 @@ app.post(
 //GET route to get a user
 app.get(
   "/users/:username",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOne({ Username: req.params.username })
       .then((user) => {
@@ -133,7 +133,7 @@ app.get(
 //PUT route to update User
 app.put(
   "/users/:username",
-  passport.authenticate("jwt", { sesstion: false }), //this code integrates authorization for all the API endpoints
+  passport.authenticate("jwt", { session: false }), //this code integrates authorization for all the API endpoints
   (req, res) => {
     Users.findOneAndUpdate(
       { Username: req.params.username },
@@ -161,7 +161,7 @@ app.put(
 //POST route to add movie to favorite
 app.post(
   "/users/:username/movies/:movieID",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
       { Username: req.params.username },
@@ -182,7 +182,7 @@ app.post(
 //DELETE route to delete favorite movie from list
 app.delete(
   "/users/:username/movies/:movieID",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
       { Username: req.params.username },
@@ -203,7 +203,7 @@ app.delete(
 //DELETE route to delete user
 app.delete(
   "/users/:username",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndRemove({ Username: req.params.username })
       .then((user) => {
@@ -239,7 +239,7 @@ app.get(
 //GET route located a the endpoint"/users" to get a list of all users
 app.get(
   "/users",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.find()
       .then((users) => {
@@ -255,7 +255,7 @@ app.get(
 //GET route located at the endpoint "/movies/title" which returns a json object with a single movie
 app.get(
   "/movies/:title",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ Title: req.params.title })
       .then((movie) => {
@@ -271,7 +271,7 @@ app.get(
 //GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
 app.get(
   "/genre/:name",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ "Genre:Name": req.params.name })
       .then((movie) => {
@@ -287,7 +287,7 @@ app.get(
 //GET route located at the endpoint "/movies/director" which returns a json object with a single movie
 app.get(
   "/directors/:name",
-  passport.authenticate("jwt", { sesstion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ "Director:Name": req.params.name })
       .then((movie) => {
