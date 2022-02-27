@@ -33,7 +33,9 @@ personal information, and create a list of their favorite movies.
 
 ## Setup
 
-Run application with 
+Clone respository and install all required packages 
+
+Run application in applications directory with
 
 `node index.js`
 
