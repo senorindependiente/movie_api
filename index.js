@@ -4,6 +4,7 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   //automatically creates and assigns unique ids to new users
   uuid = require("uuid");
+  const req = require('express/lib/request');
 const res = require("express/lib/response");
 
 //sets  express’s functionality to a variable
