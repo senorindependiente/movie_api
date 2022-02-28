@@ -20,7 +20,7 @@ app.use(morgan("common"));
 //importing mongoose to be integrated with the REST API
 // this will allow the REST API to perform CRUD operations on MongoDB
 const mongoose = require("mongoose");
-const { reset } = require("nodemon");
+
 const Models = require("./models.js");
 //importing mongoose models which were defined in models.js
 const Movies = Models.Movie;
