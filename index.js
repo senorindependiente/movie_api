@@ -49,7 +49,7 @@ app.use(cors());
 
 // CORS
 
-let allowedOrigins = ["http://localhost:1234", "http://localhost:8080"];
+let allowedOrigins = ["http://localhost:1234"];
 
 const cors = require("cors");
 app.use(cors({
