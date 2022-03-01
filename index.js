@@ -4,7 +4,7 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   //automatically creates and assigns unique ids to new users
   uuid = require("uuid");
-  const req = require('express/lib/request');
+const req = require("express/lib/request");
 const res = require("express/lib/response");
 
 //sets  express’s functionality to a variable
@@ -12,7 +12,6 @@ const app = express();
 
 //invokes the middleware module body-parser.
 //it allows you to read the “body” of HTTP requests within your request handlers simply by using the code req.body.
-
 
 //invokes middle ware function with "common" parameters using the default format
 app.use(morgan("common"));
@@ -29,15 +28,14 @@ const Users = Models.User;
 //integrating middleware express validator used for server-side input validation
 const { check, validationResult } = require("express-validator");
 
-//allows mongoose to connect to the myFlixDB database to perform CRUD operations
-
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-
 mongoose.connect("process.env.CONNECTION_URI", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+//allows mongoose to connect to the myFlixDB database to perform CRUD operations
+
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,16 +46,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let allowedOrigins = ["http://localhost:1234", "http://localhost:8080"];
 
 const cors = require("cors");
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin is not found on the list of allowed origins
-      let message = "The CORS policy for this application doesn't allow access from origin " + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin is not found on the list of allowed origins
+        let message =
+          "The CORS policy for this application doesn't allow access from origin " +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 //integrating auth.js file for authentication and authorization using HTTP and JWSToken
 let auth = require("./auth")(app);
