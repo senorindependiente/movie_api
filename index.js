@@ -28,10 +28,13 @@ const Users = Models.User;
 //integrating middleware express validator used for server-side input validation
 const { check, validationResult } = require("express-validator");
 
-mongoose.connect("process.env.CONNECTION_URI", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://fullstackwebdev:passwordpassword@myflixdb.ronu0.mongodb.net/myFlixDB?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 //allows mongoose to connect to the myFlixDB database to perform CRUD operations
 
