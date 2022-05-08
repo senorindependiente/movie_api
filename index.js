@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //integrating middleware cors for Cross-origin resource sharing
 //it defines which domains/origins can access your API (here the default is, it grands access to all domains)
 
-let allowedOrigins = ["http://localhost:1234", "http://localhost:8080"];
+let allowedOrigins = ["http://localhost:1234", "http://localhost:8080", "https://senorindependiente.github.io"];
 
 const cors = require("cors");
 app.use(
