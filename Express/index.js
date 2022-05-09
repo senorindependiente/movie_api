@@ -1,4 +1,3 @@
-
 //imports express ( a node.js)framework with middlware module packages  body parser, uuid and morgan
 const express = require("express"),
   morgan = require("morgan"),
@@ -57,11 +56,13 @@ const { check, validationResult } = require("express-validator");
 }*/
 app.post(
   "/users",
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
+  /**
+   *  / Validation logic here for request
+   * /you can either use a chain of methods like .not().isEmpty()
+   * /which means "opposite of isEmpty" in plain english "is not empty"
+   * /or use .isLength({min: 5}) which means
+   * /minimum value of 5 characters are only allowed
+   */
 
   [
     check("Username", "Username is required").isLength({ min: 5 }),
@@ -111,7 +112,9 @@ app.post(
   }
 );
 
-//GET route to get a user
+/**
+ * /GET route to get a user
+ */
 app.get(
   "/users/:username",
   passport.authenticate("jwt", { sesstion: false }),
@@ -127,7 +130,10 @@ app.get(
   }
 );
 
-//PUT route to update User
+/**
+ * /PUT route to update User
+ */
+
 app.put(
   "/users/:username",
   passport.authenticate("jwt", { sesstion: false }), //this code integrates authorization for all the API endpoints
@@ -154,8 +160,9 @@ app.put(
     );
   }
 );
-
-//POST route to add movie to favorite
+/**
+ * /POST route to add movie to favorite
+ */
 app.post(
   "/users/:username/movies/:movieID",
   passport.authenticate("jwt", { sesstion: false }),
@@ -175,8 +182,9 @@ app.post(
     );
   }
 );
-
-//DELETE route to delete favorite movie from list
+/**
+ * /DELETE route to delete favorite movie from list
+ */
 app.delete(
   "/users/:username/movies/:movieID",
   passport.authenticate("jwt", { sesstion: false }),
@@ -196,8 +204,10 @@ app.delete(
     );
   }
 );
+/**
+ * /DELETE route to delete user
+ */
 
-//DELETE route to delete user
 app.delete(
   "/users/:username",
   passport.authenticate("jwt", { sesstion: false }),
@@ -217,7 +227,10 @@ app.delete(
   }
 );
 
-//GET route located at the endpoint "/movies" which returns a json object in form of a  list of top 10 movies with the status 200 "ok"
+/**
+ * /GET route located at the endpoint "/movies" which returns a json object in form of a  list of top 10 movies with the status 200 "ok"
+
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { sesstion: false }),
@@ -233,7 +246,11 @@ app.get(
   }
 );
 
-//GET route located a the endpoint"/users" to get a list of all users
+/**
+ * /GET route located a the endpoint"/users" to get a list of all users
+
+ */
+
 app.get(
   "/users",
   passport.authenticate("jwt", { sesstion: false }),
@@ -249,7 +266,11 @@ app.get(
   }
 );
 
-//GET route located at the endpoint "/movies/title" which returns a json object with a single movie
+/**
+ * /GET route located at the endpoint "/movies/title" which returns a json object with a single movie
+
+ */
+
 app.get(
   "/movies/:title",
   passport.authenticate("jwt", { sesstion: false }),
@@ -265,7 +286,11 @@ app.get(
   }
 );
 
-//GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
+/**
+ * /GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
+
+ */
+
 app.get(
   "/genre/:name",
   passport.authenticate("jwt", { sesstion: false }),
@@ -281,7 +306,11 @@ app.get(
   }
 );
 
-//GET route located at the endpoint "/movies/director" which returns a json object with a single movie
+/**
+ * /GET route located at the endpoint "/movies/director" which returns a json object with a single movie
+
+ */
+
 app.get(
   "/directors/:name",
   passport.authenticate("jwt", { sesstion: false }),
@@ -297,7 +326,11 @@ app.get(
   }
 );
 
-//GET request to display message in the browser upon entering "localhost:8080" in the browser
+/**
+ * /GET request to display message in the browser upon entering "localhost:8080" in the browser
+
+ */
+
 app.get("/", (req, res) => {
   res.send("Welcome to my top 10 movies");
 });
@@ -308,17 +341,30 @@ app.get("/", (req, res) => {
 //   console.log("Listening on Port" + port);
 // });
 
-//express function that automatically routes all requests for static files to their corresponding files in the "public" folder
+/**
+ * /express function that automatically routes all requests for static files to their corresponding files in the "public" folder
+
+
+ */
+
 app.use(express.static("public"));
 
-//Morgan middleware library that logs all request
+/**
+ * /Morgan middleware library that logs all request
+
+ */
+
 let myLogger = (req, res, next) => {
   console.log(req.url);
   next();
 };
 app.use(myLogger);
 
-//setting the error handler in express(always put it last in line)
+/**
+ * /setting the error handler in express(always put it last in line)
+
+ */
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Error!");
