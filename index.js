@@ -1,48 +1,56 @@
-//imports express ( a node.js)framework with middlware module packages  body parser, uuid and morgan
+/**
+ * imports express ( a node.js)framework with middlware module packages  body parser, uuid and morgan
+ */
 const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
-  //automatically creates and assigns unique ids to new users
+  /**automatically creates and assigns unique ids to new users */
   uuid = require("uuid");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
-
-//sets  express’s functionality to a variable
+/**sets  express’s functionality to a variable */
 const app = express();
 
-//invokes the middleware module body-parser.
-//it allows you to read the “body” of HTTP requests within your request handlers simply by using the code req.body.
-
-//invokes middle ware function with "common" parameters using the default format
+/**invokes middle ware function with "common" parameters using the default format */
 app.use(morgan("common"));
 
-//importing mongoose to be integrated with the REST API
-// this will allow the REST API to perform CRUD operations on MongoDB
+/**
+ *  importing mongoose to be integrated with the REST API
+ * this will allow the REST API to perform CRUD operations on MongoDB
+ */
+
 const mongoose = require("mongoose");
 
 const Models = require("./models.js");
-//importing mongoose models which were defined in models.js
+/**importing mongoose models which were defined in models.js */
 const Movies = Models.Movie;
 const Users = Models.User;
-
-//integrating middleware express validator used for server-side input validation
+/**
+ * integrating middleware express validator used for server-side input validation
+ */
 const { check, validationResult } = require("express-validator");
 
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-//allows mongoose to connect to the myFlixDB database to perform CRUD operations
-
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/** allows mongoose to connect to the myFlixDB database to perform CRUD operations
+*/
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//integrating middleware cors for Cross-origin resource sharing
-//it defines which domains/origins can access your API (here the default is, it grands access to all domains)
+/**
+ * integrating middleware cors for Cross-origin resource sharing
+ * it defines which domains/origins can access your API (here the default is, it grands access to all domains)
+ */
 
-let allowedOrigins = ["http://localhost:1234", "http://localhost:8080", "https://senorindependiente.github.io", "http://localhost:4200"];
+let allowedOrigins = [
+  "http://localhost:1234",
+  "http://localhost:8080",
+  "https://senorindependiente.github.io",
+  "http://localhost:4200",
+];
 
 const cors = require("cors");
 app.use(
@@ -50,7 +58,7 @@ app.use(
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
-        // If a specific origin is not found on the list of allowed origins
+        /**If a specific origin is not found on the list of allowed origins */
         let message =
           "The CORS policy for this application doesn't allow access from origin " +
           origin;
@@ -60,13 +68,16 @@ app.use(
     },
   })
 );
-
-//integrating auth.js file for authentication and authorization using HTTP and JWSToken
+/**
+ * integrating auth.js file for authentication and authorization using HTTP and JWSToken
+ */
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
+/**
+ * POST route to add new User
+ */
 
-//POST route to add new User
 /* We’ll expect JSON in this format
 {
   ID: Integer,
@@ -77,11 +88,13 @@ require("./passport");
 }*/
 app.post(
   "/users",
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
+  /**
+   * Validation logic here for request
+   * you can either use a chain of methods like .not().isEmpty()
+   * which means "opposite of isEmpty" in plain english "is not empty"
+   * or use .isLength({min: 5}) which means
+   * minimum value of 5 characters are only allowed
+   */
 
   [
     check("Username", "Username is required").isLength({ min: 5 }),
@@ -93,25 +106,27 @@ app.post(
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   (req, res) => {
-    // check the validation object for errors
+    /**check the validation object for errors */
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.Password); //integrating hashing
+    let hashedPassword = Users.hashPassword(
+      req.body.Password
+    ); /**integrating hashing*/
     Users.findOne({ Username: req.body.Username })
 
-      // Search to see if a user with the requested username already exists
+      /** Search to see if a user with the requested username already exists*/
       .then((user) => {
         if (user) {
-          //If the user is found, send a response that it already exists
+          /**If the user is found, send a response that it already exists */
           return res.status(400).send(req.body.Username + "already exists");
         } else {
           Users.create({
             Username: req.body.Username,
-            Password: hashedPassword, //here the password is hashed
+            Password: hashedPassword /** here the password is hashed*/,
             Email: req.body.Email,
             Birthday: req.body.Birthday,
           })
@@ -131,10 +146,10 @@ app.post(
   }
 );
 
-//GET route to get a user
+/**GET route to get a user */
 app.get(
   "/users/:username",
-  // passport.authenticate("jwt", { session: false }),
+  /** passport.authenticate("jwt", { session: false }),*/
   (req, res) => {
     Users.findOne({ Username: req.params.username })
       .then((user) => {
@@ -146,11 +161,12 @@ app.get(
       });
   }
 );
-
-//PUT route to update User
+/**PUT route to update User */
 app.put(
   "/users/:username",
-  passport.authenticate("jwt", { session: false }), //this code integrates authorization for all the API endpoints
+  passport.authenticate("jwt", {
+    session: false,
+  }) /**this code integrates authorization for all the API endpoints */,
   (req, res) => {
     Users.findOneAndUpdate(
       { Username: req.params.username },
@@ -174,8 +190,7 @@ app.put(
     );
   }
 );
-
-//POST route to add movie to favorite
+/**POST route to add movie to favorite */
 app.post(
   "/users/:username/movies/:movieID",
   passport.authenticate("jwt", { session: false }),
@@ -183,7 +198,9 @@ app.post(
     Users.findOneAndUpdate(
       { Username: req.params.username },
       { $push: { FavoriteMovie: req.params.movieID } },
-      { new: true }, //This line makes sure that the updated document is returned
+      {
+        new: true,
+      } /**This line makes sure that the updated document is returned */,
       (err, updatedUser) => {
         if (err) {
           console.error(err);
@@ -195,8 +212,7 @@ app.post(
     );
   }
 );
-
-//DELETE route to delete favorite movie from list
+/** DELETE route to delete favorite movie from list*/
 app.delete(
   "/users/:username/movies/:movieID",
   passport.authenticate("jwt", { session: false }),
@@ -204,7 +220,9 @@ app.delete(
     Users.findOneAndUpdate(
       { Username: req.params.username },
       { $pull: { FavoriteMovie: req.params.movieID } },
-      { new: true }, //This line makes sure that the updated document is returned
+      {
+        new: true,
+      } /** This line makes sure that the updated document is returned*/,
       (err, updatedUser) => {
         if (err) {
           console.error(err);
@@ -216,8 +234,7 @@ app.delete(
     );
   }
 );
-
-//DELETE route to delete user
+/**DELETE route to delete user */
 app.delete(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
@@ -236,8 +253,8 @@ app.delete(
       });
   }
 );
-
-//GET route located at the endpoint "/movies" which returns a json object in form of a  list of top 10 movies with the status 200 "ok"
+/** GET route located at the endpoint "/movies" which returns a json object in form of a  list of top 10 movies with the status 200 "ok"
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -252,8 +269,7 @@ app.get(
       });
   }
 );
-
-//GET route located a the endpoint"/users" to get a list of all users
+/** GET route located a the endpoint"/users" to get a list of all users*/
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -268,8 +284,8 @@ app.get(
       });
   }
 );
-
-//GET route located at the endpoint "/movies/title" which returns a json object with a single movie
+/**GET route located at the endpoint "/movies/title" which returns a json object with a single movie
+ */
 app.get(
   "/movies/:title",
   passport.authenticate("jwt", { session: false }),
@@ -284,8 +300,8 @@ app.get(
       });
   }
 );
-
-//GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
+/** GET route located at the endpoint "/movies/genre" which returns a json object with a single movie
+ */
 app.get(
   "/genre/:name",
   passport.authenticate("jwt", { session: false }),
@@ -300,8 +316,8 @@ app.get(
       });
   }
 );
-
-//GET route located at the endpoint "/movies/director" which returns a json object with a single movie
+/** GET route located at the endpoint "/movies/director" which returns a json object with a single movie
+ */
 app.get(
   "/directors/:name",
   passport.authenticate("jwt", { session: false }),
@@ -316,29 +332,26 @@ app.get(
       });
   }
 );
-
-//GET request to display message in the browser upon entering "localhost:8080" in the browser
+/** GET request to display message in the browser upon entering "localhost:8080" in the browser
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to my top 10 movies");
 });
-
-//setting up server on port 8080, listen for request
+/**setting up server on port 8080, listen for request */
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port" + port);
 });
-
-//express function that automatically routes all requests for static files to their corresponding files in the "public" folder
+/** express function that automatically routes all requests for static files to their corresponding files in the "public" folder
+ */
 app.use(express.static("public"));
-
-//Morgan middleware library that logs all request
+/**Morgan middleware library that logs all request */
 let myLogger = (req, res, next) => {
   console.log(req.url);
   next();
 };
 app.use(myLogger);
-
-//setting the error handler in express(always put it last in line)
+/**setting the error handler in express(always put it last in line) */
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Error!");
