@@ -50,6 +50,7 @@ let allowedOrigins = [
   "http://localhost:8080",
   "https://senorindependiente.github.io",
   "http://localhost:4200",
+  "https://movieapp3000.netlify.app/"
 ];
 
 const cors = require("cors");
